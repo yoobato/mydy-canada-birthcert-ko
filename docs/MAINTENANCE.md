@@ -2,7 +2,7 @@
 
 ## 검증과 배포
 
-BC·알버타 지원 버전의 배포가 승인되었습니다. 현재 서비스 도메인을 유지하며 두 지역을 지원합니다.
+**현재 SK 지원 변경은 로컬 검토 중이며 아직 배포하지 않습니다.** 사용자 승인 전에는 `origin/main`에 push하지 않습니다. 현재 코드는 BC·AB·SK 세 지역을 지원합니다.
 
 일반 배포 시에는 수정 후 관련 검증을 수행하고 `main`에 커밋한 뒤 `origin/main`으로 푸시합니다. GitHub Actions가 단위 테스트와 빌드를 실행하고 `dist/`를 GitHub Pages에 배포합니다. 브라우저 검증은 로컬에서 별도 실행합니다. 배포 산출물 이름에는 실행 ID와 재시도 번호를 포함해 재실행 시 중복을 방지합니다. 게시 단계에서 시간 초과가 발생하면 Actions 로그를 확인하고, 실제 사이트 반영 여부까지 확인합니다.
 
@@ -27,20 +27,7 @@ node tests/regions-browser.mjs
 
 도메인을 바꾸면 `index.html`, `public/robots.txt`, `public/sitemap.xml`, `src/analytics.js`의 고정 URL과 공유 이미지·문서도 함께 갱신합니다. Actions 배포에서는 저장소의 CNAME 파일이 필요하지 않습니다.
 
-### 도메인 이전 절차
-
-새 도메인의 CNAME을 확인하고 GitHub Pages의 Custom domain을 `canada-birthcert-ko.mydy.kr`로 전환했습니다. 기존 `ab-birthcert-ko.mydy.kr` 주소는 GoDaddy 301 포워딩을 별도로 설정해야 합니다. 사용자가 새 도메인용으로 제공한 배너 코드 세 가지를 적용했습니다.
-
-1. GitHub 계정의 Pages 도메인 인증을 이용해 `mydy.kr` 소유권을 확인합니다. 기존 인증이 있다면 유지합니다.
-2. GoDaddy에서 CNAME `canada-birthcert-ko` → `yoobato.github.io`를 추가합니다. `@`, `calog` 등 다른 레코드는 변경하지 않습니다.
-3. 해당 저장소 Settings → Pages → Custom domain을 `canada-birthcert-ko.mydy.kr`로 변경합니다. DNS 확인과 인증서 발급 후 Enforce HTTPS를 확인합니다.
-4. 사이트의 새 canonical·GA 고정 URL·사이트맵·공유 이미지 변경을 배포합니다.
-5. 새 주소의 HTTPS와 입력·PDF 생성이 정상인지 확인한 뒤 GoDaddy DNS → Forwarding → Subdomain에 `ab-birthcert-ko` → `https://canada-birthcert-ko.mydy.kr/`, Permanent (301), Forward only를 설정합니다. 기존 서브도메인 DNS는 GoDaddy 포워딩용으로 전환되므로 별도로 CNAME을 유지하지 않습니다.
-6. 기존 주소의 HTTP·HTTPS 요청이 새 주소로 리디렉션되는지 확인합니다. GitHub Pages Custom domain 변경만으로 두 개의 임의 서브도메인 간 리디렉션이 설정되지는 않습니다.
-7. Adsterra에서 새 주소를 사이트로 추가하고 Banner 728×90·320×50·300×250 코드를 발급받아 교체합니다. 또는 담당 지원팀이 기존 사이트와 코드의 도메인 변경을 승인했는지 확인합니다. 기존 코드가 새 도메인에서도 승인된다고 가정하지 않습니다.
-8. GA 웹 데이터 스트림의 웹사이트 URL을 새 주소로 수정합니다. 측정 ID는 유지합니다. Search Console과 `mydy.kr` 소개 페이지의 서비스 링크도 갱신합니다.
-
-GoDaddy 포워딩은 공식 안내상 HTTPS를 자동 지원합니다. DNS 전파와 각 서비스 인증 완료 시점은 별도로 확인합니다.
+기존 `ab-birthcert-ko.mydy.kr`은 GoDaddy의 301 포워딩으로 현재 주소에 연결합니다. 다른 서브도메인 DNS는 변경하지 않습니다. 도메인 변경 시 기존 주소의 HTTP·HTTPS 리디렉션도 확인합니다.
 
 ## Google Analytics
 
@@ -54,9 +41,9 @@ GoDaddy 포워딩은 공식 안내상 HTTPS를 자동 지원합니다. DNS 전�
 | `preview_pdf_download` | 미리보기 안의 PDF 저장 링크 클릭 |
 | `support_click` | 커피 후원 버튼을 눌러 Ko-fi 창을 연 경우 (결제 완료 아님) |
 
-모든 이벤트는 `certificate_region` 매개변수에 `bc` 또는 `ab`만 보냅니다. 방문 이벤트는 최초 선택 지역, 나머지는 동작 당시 선택 지역을 기록합니다. 지역 변경 자체는 별도 이벤트를 보내지 않습니다. GA 관리에서 이벤트 범위 맞춤 측정기준을 만들고 이벤트 매개변수를 `certificate_region`으로 지정해야 일반 보고서·탐색에서 지역별 분석을 할 수 있습니다.
+모든 이벤트는 `certificate_region` 매개변수에 `bc`, `ab`, `sk`만 보냅니다. 방문 이벤트는 최초 선택 지역, 나머지는 동작 당시 선택 지역을 기록합니다. 지역 변경 자체는 별도 이벤트를 보내지 않습니다. GA 관리에서 이벤트 범위 맞춤 측정기준을 만들고 이벤트 매개변수를 `certificate_region`으로 지정해야 일반 보고서·탐색에서 지역별 분석을 할 수 있습니다.
 
-공개 배포본의 GA 페이지 제목은 `캐나다 출생증명서 번역 | BC·알버타 한글 번역문 PDF`이며, SK 로컬 검토본은 `캐나다 출생증명서 번역 | BC·알버타·SK 한글 번역문 PDF`로 확장했습니다.
+GA 페이지 제목은 `캐나다 출생증명서 번역 | BC·알버타·SK 한글 번역문 PDF`입니다.
 
 광고 클릭은 별도 출처의 격리된 iframe 내부에서 발생하므로 GA에서 감지하거나 추정하지 않습니다. Adsterra 통계를 사용합니다.
 
@@ -74,7 +61,7 @@ GoDaddy 포워딩은 공식 안내상 HTTPS를 자동 지원합니다. DNS 전�
 
 `from=threads`가 정확히 한 번 있거나 기존 UTM 세 매개변수가 위 값과 정확히 일치하고 중복되지 않을 때 GA의 `campaign_source=threads`, `campaign_medium=social`, `campaign_name=birthcert_launch`를 설정합니다. 두 링크는 리디렉션 없이 동일한 캠페인으로 처리합니다. 임의의 UTM 값, 추가 쿼리, 전체 URL은 전달하지 않습니다. 개발 환경에서는 이 기능도 비활성화됩니다.
 
-GA 트래픽 획득 보고서의 세션 소스/매체에서 `threads / social`, 세션 캠페인에서 `birthcert_launch`를 확인합니다. 탐색 분석에서 세션 소스/매체를 필터로 쓰면 해당 세션의 버튼 이벤트를 BC·AB별로 비교할 수 있습니다. 별도 맞춤 측정기준은 필요하지 않습니다. GA 보고서에서 실제 수집·귀속을 확인한 것과 코드/전송 설정 검증은 구분합니다. 새 세션이 시작되지 않은 기존 방문자는 세션 귀속이 다를 수 있습니다. 링크가 다른 곳으로 재공유돼도 동일 캠페인으로 표시되므로 사람의 실제 열람 출처를 증명하지는 않습니다. 이전 유입은 소급 분류할 수 없습니다.
+GA 트래픽 획득 보고서의 세션 소스/매체에서 `threads / social`, 세션 캠페인에서 `birthcert_launch`를 확인합니다. 탐색 분석에서 세션 소스/매체를 필터로 쓰면 해당 세션의 버튼 이벤트를 BC·AB·SK별로 비교할 수 있습니다. 별도 맞춤 측정기준은 필요하지 않습니다. GA 보고서에서 실제 수집·귀속을 확인한 것과 코드/전송 설정 검증은 구분합니다. 새 세션이 시작되지 않은 기존 방문자는 세션 귀속이 다를 수 있습니다. 링크가 다른 곳으로 재공유돼도 동일 캠페인으로 표시되므로 사람의 실제 열람 출처를 증명하지는 않습니다. 이전 유입은 소급 분류할 수 없습니다.
 
 ## Adsterra
 
@@ -92,7 +79,7 @@ GA 트래픽 획득 보고서의 세션 소스/매체에서 `threads / social`, 
 
 개발 서버에서는 광고 프레임을 생성하지 않습니다. 프로덕션 빌드의 브라우저 테스트에서는 스크립트를 테스트 응답으로 대체해 실제 광고 요청을 막고, 프레임의 입력값 접근 차단과 레이아웃을 확인합니다. 프로덕션 빌드를 수동으로 미리 볼 때도 광고 스크립트를 차단해야 합니다.
 
-이 서비스의 기존 AdSense 로더와 계정 메타 태그는 제거했습니다. 루트 `mydy.kr`의 광고 설정은 별도 저장소에서 관리합니다. 배너의 실제 공급·광고 분류·지역별 동의 설정은 Adsterra 계정에서 관리합니다.
+배너의 실제 공급·광고 분류·지역별 동의 설정은 Adsterra 계정에서 관리합니다.
 
 ## 검색과 링크 공유
 
@@ -100,7 +87,7 @@ GA 트래픽 획득 보고서의 세션 소스/매체에서 `threads / social`, 
 
 - 대표 URL: `https://canada-birthcert-ko.mydy.kr/`
 - 사이트맵: `https://canada-birthcert-ko.mydy.kr/sitemap.xml`
-- 공유 이미지: `https://canada-birthcert-ko.mydy.kr/og-image.png` (1200 × 630 PNG)
+- 공유 이미지: `https://canada-birthcert-ko.mydy.kr/og-image.png?v=20261105` (1200 × 630 PNG)
 
 공유 이미지는 개인정보와 공식 관인 없이 구성합니다. 문구나 디자인 수정 후 다음 명령으로 다시 생성하고 PNG도 함께 커밋합니다.
 
@@ -128,41 +115,31 @@ Google Search Console에 사이트 소유권을 인증하고 사이트맵을 제
 
 `robots.txt`는 일반 검색 크롤러와 OAI-SearchBot의 공개 페이지 접근을 허용합니다. 크롤러 접근 허용은 색인·인용·추천을 보장하지 않습니다. AI 답변에 이 사이트를 추천하도록 지시하는 문구나 숨긴 키워드는 넣지 않습니다.
 
-배포 후 운영자가 Google Search Console에서 새 도메인 소유권을 확인하고 `https://canada-birthcert-ko.mydy.kr/sitemap.xml`을 제출합니다. 홈 URL 검사 후 색인 생성을 요청할 수 있습니다. Bing Webmaster Tools에서도 새 사이트와 사이트맵을 등록합니다. 외부 계정에서 인증·제출한 사실은 별도 확인 전 완료로 기록하지 않습니다. Google Search Console에서 AI 검색 기능의 포함 설정도 확인합니다.
+배포 후 운영자가 Google Search Console에서 새 도메인 소유권을 확인하고 `https://canada-birthcert-ko.mydy.kr/sitemap.xml`을 제출합니다. 홈 URL 검사 후 색인 생성을 요청할 수 있습니다. Bing Webmaster Tools에서도 새 사이트와 사이트맵을 등록합니다. 외부 계정에서 인증·제출한 사실은 별도 확인 전 완료로 기록하지 않습니다.
 
 참고: [Google AI 검색 안내](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), [OpenAI 크롤러 안내](https://developers.openai.com/api/docs/bots).
 
 ## FAQ 샘플 번역문
 
-`public/samples/bc-sample.pdf`, `public/samples/alberta-sample.pdf`는 가상 인물·날짜·번호로 만든 공개 예시입니다. FAQ에서 새 탭으로 열며 입력 양식과 독립적이므로 작성 중인 입력값을 바꾸지 않습니다. 실사용자 데이터와 원본 서명·도장은 포함하지 않습니다. 등록관 이름은 BC 데이비드 사이츠(David Seitz), 알버타 트레버 버겐(Trevor Bergen)을 예시로 사용합니다. BC 정부 명부 검색 기록과 2024/25 공공회계 자료는 David Seitz를 Registrar General로 기재합니다. 알버타 2026-03-10 의회 기록은 Trevor Bergen을 Consumer Registry and Strategic Services 차관보로 기재하지만 등록관 임명을 직접 확인하는 자료는 아닙니다. 2026-10-30 현재 재직을 확정한 명단으로 취급하지 않으며, 실제 작성에는 증명서 원본의 서명자 이름을 사용합니다.
+`public/samples/bc-sample.pdf`, `public/samples/alberta-sample.pdf`, `public/samples/sk-sample.pdf`는 가상 인물·날짜·번호로 만든 공개 예시입니다. FAQ에서 새 탭으로 열며 입력 양식과 독립적이므로 작성 중인 입력값을 바꾸지 않습니다. 실사용자 데이터와 원본 서명·도장은 포함하지 않습니다. 등록관 이름은 BC 데이비드 사이츠(David Seitz), 알버타 트레버 버겐(Trevor Bergen)을 예시로 사용합니다. BC 정부 명부 검색 기록과 2024/25 공공회계 자료는 David Seitz를 Registrar General로 기재합니다. 알버타 2026-03-10 의회 기록은 Trevor Bergen을 Consumer Registry and Strategic Services 차관보로 기재하지만 등록관 임명을 직접 확인하는 자료는 아닙니다. 2026-10-30 현재 재직을 확정한 명단으로 취급하지 않으며, 실제 작성에는 증명서 원본의 서명자 이름을 사용합니다.
 
-`node scripts/generate-samples.mjs`로 실제 번역문과 같은 PDF 생성기를 사용해 재생성합니다. 샘플 생성 옵션에서만 상단에 샘플·가상 정보·제출용 아님 안내를 넣습니다. 일반 사용자 PDF에는 이 안내를 넣지 않습니다. PDF 서식 변경 시 두 샘플도 재생성하고 렌더링을 확인합니다. 개인정보를 넣은 테스트 PDF는 기존 규칙대로 커밋하지 않습니다.
+`node scripts/generate-samples.mjs`로 실제 번역문과 같은 PDF 생성기를 사용해 재생성합니다. 샘플 생성 옵션에서만 상단에 샘플·가상 정보·제출용 아님 안내를 넣습니다. 일반 사용자 PDF에는 이 안내를 넣지 않습니다. PDF 서식 변경 시 관련 주의 샘플도 재생성하고 렌더링을 확인합니다. 개인정보를 넣은 테스트 PDF는 기존 규칙대로 커밋하지 않습니다.
 
 샘플 등록관 참고 자료: [BC 공공회계 2024/25](https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/government-finances/public-accounts/2024-25/pa-2024-25-crf-detailed-schedules-of-payments.pdf), [알버타 의회 2026-03-10 기록](https://docs.assembly.ab.ca/LADDAR_files/docs/committees/ef/legislature_31/session_2/20260310_1530_01_ef.pdf).
 
 ## 커피 후원 위젯
 
-PDF 다운로드 버튼 아래의 ‘☕ 개발자에게 커피 한 잔’은 페이지 내 dialog에서 Ko-fi 공식 Tip Panel을 엽니다. 버튼을 누를 때만 `https://ko-fi.com/yoobato/?hidefeed=true&widget=true&embed=true&preview=true` iframe을 만들고, 닫으면 제거합니다. 외부 스크립트를 부모 페이지에 삽입하지 않습니다. cross-origin iframe과 no-referrer 정책을 유지하고 양식 입력값·PDF 내용을 전달하지 않습니다. 닫기·Esc·바깥 영역 클릭을 지원하며 창 안에는 Ko-fi 페이지로 직접 이동하는 대체 링크도 제공합니다. 후원은 선택 사항이며 PDF 생성·다운로드와 독립적입니다. 후원 클릭이나 결제 완료 이벤트를 GA에 추가하지 않습니다. 후원 창을 열면 Ko-fi 및 결제 제공업체로 접속이 발생하며 해당 업체의 개인정보 처리방침이 적용됩니다. 결제·본인 인증·정산은 Ko-fi 및 연결된 결제 서비스에서 처리합니다. 공식 위젯 안내상 Apple Pay·Google Pay는 위젯에서 지원하지 않으므로 필요한 경우 대체 링크를 이용합니다. 참고: https://help.ko-fi.com/hc/en-us/articles/360018381678-Ko-fi-tip-widget
+PDF 다운로드 버튼 아래의 ‘☕ 개발자에게 커피 한 잔’은 페이지 내 dialog에서 Ko-fi 공식 Tip Panel을 엽니다. 버튼을 누를 때만 `https://ko-fi.com/yoobato/?hidefeed=true&widget=true&embed=true&preview=true` iframe을 만들고, 닫으면 제거합니다. 외부 스크립트를 부모 페이지에 삽입하지 않습니다. cross-origin iframe과 no-referrer 정책을 유지하고 양식 입력값·PDF 내용을 전달하지 않습니다. 닫기·Esc·바깥 영역 클릭을 지원하며 창 안에는 Ko-fi 페이지로 직접 이동하는 대체 링크도 제공합니다. 후원은 선택 사항이며 PDF 생성·다운로드와 독립적입니다. `support_click`은 후원 창 열기만 기록하며 결제 완료를 추적하지 않습니다. 후원 창을 열면 Ko-fi 및 결제 제공업체로 접속이 발생하며 해당 업체의 개인정보 처리방침이 적용됩니다. 결제·본인 인증·정산은 Ko-fi 및 연결된 결제 서비스에서 처리합니다. 공식 위젯 안내상 Apple Pay·Google Pay는 위젯에서 지원하지 않으므로 필요한 경우 대체 링크를 이용합니다. 참고: https://help.ko-fi.com/hc/en-us/articles/360018381678-Ko-fi-tip-widget
 
+## SK 서식과 샘플
 
-## SK 로컬 검토 (미배포)
+SK는 공식 관보 FORM V.S. 15A와 공개 발급본을 참고합니다. 참고 링크는 개발 기록용이며 개인 문서 이미지는 저장소에 포함하지 않습니다.
 
-- `?region=sk`로 서스캐처원 Long form 입력 화면을 엽니다. 기본 선택은 BC를 유지합니다.
-- 출처: Saskatchewan Gazette, 2010-10-08, 인쇄 632쪽 / PDF 74쪽, FORM V.S. 15A. https://pubsaskdev.blob.core.windows.net/pubsask-prod/38226/G2201040.pdf#page=74
-- Name은 성·이름을 합친 한글 성명 한 필드입니다. 부모 1·2는 원본 순서대로 입력하며 출생지는 옆에 배치합니다.
-- SK 서식 번호 기본값은 사용자가 공개 발급본에서 확인한 `V.S. 15 2019/08`입니다. 원본과 다른 경우 수정·삭제할 수 있습니다.
-- Registrar는 ‘등록관’으로 표시하고 사용자 직접 입력을 유지합니다. 등록관 입력은 비워 두고 제니퍼 린덴바흐를 placeholder 예시로 표시합니다. 번역문은 사용자가 입력한 원본의 이름을 사용하며 서명 이미지는 추가하지 않습니다. 공개 발급본에서 확인한 `Certified extract from Registration of Birth issued at Regina, Saskatchewan, Canada.`를 화면 및 한글 PDF에 반영합니다.
-- PDF는 기존과 같은 Letter 한 페이지이며 SK 필드 배치를 별도로 적용합니다. GA 지역 허용 목록에 `sk`를 추가하되 로컬에서는 통계를 보내지 않습니다.
-- 사용자 요청에 따라 로컬 main에 커밋하되 배포 승인 전에는 push하지 않습니다. 공유 이미지 갱신은 공개 출시 전 별도 검토합니다.
+- [공식 관보, PDF 74쪽](https://pubsaskdev.blob.core.windows.net/pubsask-prod/38226/G2201040.pdf#page=74)
+- [가림 처리된 공개 발급본](https://www.reddit.com/r/Canadiancitizenship/comments/1ry8y4x/obtaining_saskatchewan_birth_certificate/)
+- 서식 번호 기본값: 사용자가 공개 발급본에서 확인한 `V.S. 15 2019/08`. 원본에 따라 수정·삭제합니다.
+- 등록관 예시: Jennifer Lindenbach(제니퍼 린덴바흐). [2026년 4월 공식 관보](https://publications.saskatchewan.ca/api/v1/products/128418/formats/154011/download)와 [주정부 명부](https://www.saskatchewan.ca/government/directory?p=4588e642-a590-4786-a6d2-c28810b3a841)를 참고했습니다. 실제 작성에는 원본의 이름을 사용합니다.
+- 인증 문구: `Certified extract from Registration of Birth issued at Regina, Saskatchewan, Canada.`. 리자이나는 발급 장소이며 출생 도시와 별개입니다.
+- 사망자 표시·원본 관인·서명·바코드는 아기용 번역문에 추가하지 않습니다.
 
-SK 가상 샘플은 `public/samples/sk-sample.pdf`입니다. 홍길동(남), 2026-03-27 출생, 새스커툰, 등록일 2026-03-30, 발급일 2026-04-02, 부모 춘섬·홍문(대한민국), 번역자 홍문을 사용합니다. 등록관 예시는 Jennifer Lindenbach(제니퍼 린덴바흐)입니다. 2026년 4월 SK 공식 관보와 주정부 명부에서 확인했으며, 실제 제출은 원본의 이름을 따릅니다. `node scripts/generate-samples.mjs sk-sample.pdf`로 SK 샘플만 재생성할 수 있습니다.
-
-SK PDF 본문 표는 전체 폭 519pt를 좌우 259.5pt씩 나눕니다. 두 열의 항목명 셀은 각각 81pt이며 값 셀 너비도 같습니다. 성명·번역자 표는 왼쪽 열, 증명서 번호는 오른쪽 열의 가운데에 맞춥니다. 이 배치는 샘플과 실제 PDF 생성에 공통으로 적용됩니다.
-
-
-### SK 공개 발급본 보완
-
-- 참고: https://www.reddit.com/r/Canadiancitizenship/comments/1ry8y4x/obtaining_saskatchewan_birth_certificate/ 의 가림 처리된 부모 정보 포함 증명서. 사진에는 사망자 표시가 있지만 아기 양식에는 적용하지 않습니다.
-- 오른쪽 원형 문양의 `VITAL EVENT RECORD` / `SASKATCHEWAN`과 리자이나 발급 문구를 반영했습니다. SVG는 다른 주와 같은 중앙 도형을 사용하는 자체 장식이며 생성 PDF에는 넣지 않습니다.
-- 사용자가 사진의 서식 번호를 `V.S. 15 2019/08`로 확인하여 입력 초기값과 샘플에 반영했습니다.
-- 인증 문구의 리자이나는 발급 도시입니다. 사용자가 입력하는 아기의 출생 도시(예: 새스커툰)와 별개입니다.
+가상 샘플은 홍길동(남), 2026-03-27 출생, 새스커툰, 등록일 2026-03-30, 발급일 2026-04-02, 등록번호 2026-03-123456, 증명서번호 SK12345678, 부모 춘섬·홍문(대한민국), 번역자 홍문을 사용합니다. `node scripts/generate-samples.mjs sk-sample.pdf`로 SK 샘플만 재생성할 수 있습니다.

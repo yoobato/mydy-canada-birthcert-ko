@@ -12,6 +12,8 @@ test('public search pages have distinct canonical metadata, readable content and
   assert.ok(!html.includes('noindex'));
   const title=html.match(/<title>(.*?)<\/title>/)[1];assert.ok(!titles.has(title));titles.add(title);
   assert.match(html,/<h1[^>]*>[^<]+/);
+  for(const key of ['description','og:description','twitter:description']){const meta=html.match(new RegExp('<meta (?:name|property)=\"'+key+'\" content=\"([^\"]+)\"'));assert.ok(meta);assert.match(meta[1],/서스캐처원\(SK\)/);}
+  assert.match(html,/SK주 샘플 번역문 보기/);
   assert.match(html,/<h2 id="faq-title">자주 묻는 질문<\/h2>/);
   assert.equal((html.match(/<details>/g)||[]).length,8);
   assert.ok(!html.includes('<details open'));

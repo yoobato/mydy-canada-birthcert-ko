@@ -1,6 +1,6 @@
 @font-face {
   font-family: Nanum;
-  src: url('../public/fonts/NanumGothic-Regular.ttf') format('truetype');
+  src: url('/fonts/NanumGothic-Regular.ttf') format('truetype');
   font-display: swap
 }
 
@@ -360,7 +360,7 @@ a {
   position: absolute;
   top: 170px;
   bottom: 120px;
-  background: url('../public/botanical.svg') center top/62px auto repeat-y;
+  background: url('/botanical.svg') center top/62px auto repeat-y;
   z-index: -1;
   pointer-events: none;
 }
@@ -995,10 +995,6 @@ a {
   align-items: center
 }
 
-.registrar-input,.form-code {
-  transform: translateY(-24px)
-}
-
 .form-code {
   padding-bottom: 0
 }
@@ -1032,9 +1028,6 @@ a {
 }
 
 @media(max-width:760px) {
-  .registrar-input,.form-code {
-  transform: translateY(-20px)
-}
   .registrar #registrarKo,.serial #serial {
   font-size: 12px;
   padding: 6px 3px
@@ -1054,14 +1047,6 @@ a {
   font-size: 10px;
   color: #83928a;
   margin-top: 15px
-}
-
-.form-code {
-  transform: translateY(13px)
-}
-
-.registrar-input {
-  transform: none
 }
 
 .form-code label {
@@ -1201,12 +1186,11 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
 .paper-sk .field-birth { grid-column:1; grid-row:2; }
 .paper-sk .field-sex { grid-column:2; grid-row:2; }
 .paper-sk .field-place { grid-column:1; grid-row:3; }
-.paper-sk .field-registered { grid-column:2; grid-row:3; grid-template-columns:65px minmax(0,1fr); gap:8px; }
+.paper-sk .field-registered { grid-column:2; grid-row:3; }
 .paper-sk .field-parent1 { grid-column:1; grid-row:4; }
 .paper-sk .field-parent1Place { grid-column:2; grid-row:4; }
 .paper-sk .field-parent2 { grid-column:1; grid-row:5; }
 .paper-sk .field-parent2Place { grid-column:2; grid-row:5; }
-.paper-sk .field-parent1Place,.paper-sk .field-parent2Place { grid-template-columns:65px minmax(0,1fr); gap:8px; }
 .paper-sk .field-registration { grid-column:1; grid-row:6; margin-top:70px; }
 .paper-sk .field-issued { grid-column:2; grid-row:6; margin-top:70px; }
 .paper-sk .fields .field-tooltip { max-width:220px; }
@@ -1216,10 +1200,10 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
  .sk-province { font-size:14px; letter-spacing:0; }
  .paper-sk .paper-heading { min-height:110px; padding-top:20px; }
  .paper-sk .registrar { grid-template-columns:.8fr 1.5fr 1fr; padding-right:0; gap:0; }
- .paper-sk .fields { grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px 10px; }
+ .paper-sk .fields { gap:15px 10px; }
  .paper-sk .certificate-field { grid-template-columns:minmax(0,1fr); gap:4px; align-items:start; }
  .paper-sk .certificate-field input,.paper-sk .certificate-field select { width:100%; min-width:0; }
- .paper-sk .field-name { padding-right:0; margin-bottom:8px; }
+ .paper-sk .field-name { margin-bottom:8px; }
  .paper-sk .sex-other { grid-column:1; }
  .paper-sk .certificate-field>.field-error { grid-column:1; }
  .paper-sk .field-registration,.paper-sk .field-issued { margin-top:35px; }
@@ -1259,9 +1243,7 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
   text-align:left;
 }
 @media(max-width:760px) {
- .paper-bc .paper-heading,.paper-sk .paper-heading { padding-left:calc(24% + 11px); }
-}
-@media(max-width:760px) {
+ .paper-bc .paper-heading { padding-left:calc(24% + 11px); }
  .paper-sk .paper-heading { padding-left:calc(24% + 13px); }
 }
 @media(min-width:761px) {
@@ -1277,3 +1259,5 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
 }
 
 .paper-sk .certificate-emblem { opacity:.8; }
+
+.brand h1 { margin:0; font:inherit; }
