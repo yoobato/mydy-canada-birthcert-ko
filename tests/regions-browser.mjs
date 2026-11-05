@@ -17,7 +17,7 @@ assert.equal(await page.locator('#place').getAttribute('placeholder'),'예. 밴�
 assert.match(await page.locator('label[for="registration"]').innerText(),/Registration Number/);
 assert.equal(await page.locator('#sex option[value="M"]').innerText(),'남 (MALE)');
 assert.equal(await page.locator('#sex option[value="F"]').innerText(),'여 (FEMALE)');
-assert.equal(await page.locator('.paper').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(245, 251, 253)');
+assert.equal(await page.locator('.paper').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(249, 252, 254)');
 assert.match(await page.locator('.paper').innerText(),/Victoria, British Columbia, Canada/);
 const values={surname:'김',given:'하늘',birth:'2024-02-29',place:'밴쿠버',registration:'TEST-BC-0000',registered:'2024-03-01',issued:'2024-03-05',parent1:'이예시',parent1Place:'대한민국',parent2:'김예시',parent2Place:'브리티시컬럼비아주, 캐나다',registrarKo:'김등록',translator:'김번역',serial:'123456789'};
 for(const [key,value]of Object.entries(values))await page.locator('#'+key).fill(value);

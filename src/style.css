@@ -1142,7 +1142,7 @@ a {
 .region-options button span { display:block; margin-top:5px; font-size:12px; }
 .region-options button[aria-pressed="true"] { background:#e4eeea; border-color:#456f67; box-shadow:inset 0 0 0 1px #456f67; }
 .region-options button:focus-visible { outline:3px solid #91b6ac; outline-offset:3px; }
-.paper-bc { background-color:#f5fbfd; background-image:repeating-linear-gradient(65deg,transparent,transparent 8px,#8ab9cf10 9px,transparent 10px); }
+.paper-bc { background-color:#f9fcfe; background-image:repeating-linear-gradient(65deg,transparent,transparent 8px,#8ab9cf0a 9px,transparent 10px); }
 .paper-bc .paper-heading { padding:22px 0 0; min-height:145px; text-align:center; justify-content:flex-end; align-items:flex-start; }
 .bc-province { width:fit-content; color:#274b42; font-family:Arial,sans-serif; font-size:24px; font-weight:800; letter-spacing:2.4px; transform:scaleX(1.08); transform-origin:left center; }
 .paper-bc .doc-title { color:#294a42; }
@@ -1191,7 +1191,7 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
 .status:empty{margin-top:0;min-height:0}
 
 /* SK long form: Name is combined, parents and their birthplaces share rows. */
-.paper-sk { background-color:#f5fbfd; }
+.paper-sk { background-color:#f9fcfe; }
 .paper-sk .paper-heading { min-height:145px; padding-top:22px; align-items:flex-start; justify-content:flex-end; }
 .sk-province { width:73%; font:bold 24px/1.3 Georgia,serif; color:#294a42; letter-spacing:1px; }
 .paper-sk .registrar { grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); padding-right:18%; }
@@ -1266,4 +1266,12 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
 }
 @media(min-width:761px) {
  .paper-sk .paper-heading { padding-left:calc(27% + 21px); }
+}
+
+/* Soften BC/SK security-paper decoration while keeping text and controls crisp. */
+.paper-bc:before,.paper-sk:before { opacity:.5; }
+.paper-bc:after,.paper-sk:after { opacity:.15; }
+.paper-bc .bc-corner,.paper-sk .bc-corner { opacity:.45; }
+@media(max-width:760px) {
+ .paper-bc:after,.paper-sk:after { opacity:.11; }
 }
