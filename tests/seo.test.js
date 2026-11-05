@@ -13,7 +13,7 @@ test('public search pages have distinct canonical metadata, readable content and
   const title=html.match(/<title>(.*?)<\/title>/)[1];assert.ok(!titles.has(title));titles.add(title);
   assert.match(html,/<h1[^>]*>[^<]+/);
   assert.match(html,/<h2 id="faq-title">자주 묻는 질문<\/h2>/);
-  assert.equal((html.match(/<details>/g)||[]).length,7);
+  assert.equal((html.match(/<details>/g)||[]).length,8);
   assert.ok(!html.includes('<details open'));
   assert.ok(!html.includes('service-guide'));
   assert.ok(!html.includes('href="/bc/"'));
