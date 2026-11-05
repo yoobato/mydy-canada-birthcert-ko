@@ -1247,3 +1247,17 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
  .paper-sk .certificate-field { grid-template-columns:110px minmax(0,1fr); gap:12px; }
 }
 .paper .serial { margin-top:32px; }
+
+/* Province names start at the same inset as the ribbon title text. */
+.paper-bc .paper-heading,.paper-sk .paper-heading {
+  padding-left:calc(27% + 19px);
+  justify-content:flex-start;
+}
+.paper-bc .paper-heading>div,.paper-sk .sk-province {
+  width:100%;
+  padding-left:0;
+  text-align:left;
+}
+@media(max-width:760px) {
+ .paper-bc .paper-heading,.paper-sk .paper-heading { padding-left:calc(24% + 11px); }
+}
