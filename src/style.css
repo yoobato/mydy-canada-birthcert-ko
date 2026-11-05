@@ -1226,3 +1226,13 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
 }
 
 .paper-sk .field-sex,.paper-sk .field-issued { width:100%; }
+
+/* Align form code and registrar fields by their input bottom edges in every region. */
+.registrar > .form-code,.registrar > .registrar-input {
+  align-self:end;
+  transform:none;
+}
+.registrar #formCode,.registrar #registrarKo {
+  height:35px;
+  flex-shrink:0;
+}
