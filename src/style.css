@@ -1239,3 +1239,5 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
 
 .region-picker .region-availability,.region-picker .form-contact { color:#526f65; font-weight:500; }
 .region-picker .form-contact a { font-weight:700; }
+
+.region-picker .region-availability { margin-top:14px; }
