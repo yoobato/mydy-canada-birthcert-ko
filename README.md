@@ -2,7 +2,7 @@
 
 캐나다 알버타·브리티시컬럼비아(BC) 출생증명서를 보며 한글 내용을 입력하고 **Letter 크기의 번역문 PDF**를 만드는 웹 도구입니다.
 
-**[서비스 열기](https://canada-birthcert-ko.mydy.kr/)** · [GitHub](https://github.com/yoobato/mydy-canada-birth-certificate-ko) · [개발·운영 안내](docs/MAINTENANCE.md)
+**[서비스 열기](https://canada-birthcert-ko.mydy.kr/)** · [GitHub](https://github.com/yoobato/mydy-canada-birthcert-ko) · [개발·운영 안내](docs/MAINTENANCE.md)
 
 ![링크 공유 이미지](public/og-image.png)
 

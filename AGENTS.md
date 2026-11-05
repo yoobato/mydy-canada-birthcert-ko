@@ -1,6 +1,6 @@
 # Project instructions
 
-- GitHub repository: https://github.com/yoobato/mydy-canada-birth-certificate-ko
+- GitHub repository: https://github.com/yoobato/mydy-canada-birthcert-ko
 - User approved release of BC and Alberta support. Commit completed changes on `main` and push for GitHub Pages deployment. User approved migration to `canada-birthcert-ko.mydy.kr`. DNS for the new domain is configured and the user authorized the GitHub Pages cutover. Deploy to `canada-birthcert-ko.mydy.kr`. GoDaddy 301 forwarding from `ab-birthcert-ko.mydy.kr` must follow successful new-domain HTTPS verification.
 - User instruction: commit every completed modification to the `main` branch. Run relevant validation first, then commit on `main`. Push to `origin/main` only when deployment is authorized, since it triggers GitHub Pages.
 - Never commit real birth certificates, translated personal documents, actual family information, generated user PDFs, credentials, or browser test outputs.
