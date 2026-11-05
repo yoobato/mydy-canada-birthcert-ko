@@ -151,10 +151,18 @@ PDF 다운로드 버튼 아래의 ‘☕ 개발자에게 커피 한 잔’은 �
 - 출처: Saskatchewan Gazette, 2010-10-08, 인쇄 632쪽 / PDF 74쪽, FORM V.S. 15A. https://pubsaskdev.blob.core.windows.net/pubsask-prod/38226/G2201040.pdf#page=74
 - Name은 성·이름을 합친 한글 성명 한 필드입니다. 부모 1·2는 원본 순서대로 입력하며 출생지는 옆에 배치합니다.
 - 서식 번호는 견본에 인쇄된 `V.S. 15 2008/09`를 초기값으로 사용합니다. 최신 서식으로 확인한 값이 아니며 수정·삭제할 수 있습니다.
-- Registrar는 ‘등록관’으로 표시하고 사용자 직접 입력을 유지합니다. 등록관 입력은 비워 두고 제니퍼 린덴바흐를 placeholder 예시로 표시합니다. 번역문은 사용자가 입력한 원본의 이름을 사용하며 서명 이미지는 추가하지 않습니다. 원본에 없는 Certified extract 문구도 SK에는 넣지 않습니다.
+- Registrar는 ‘등록관’으로 표시하고 사용자 직접 입력을 유지합니다. 등록관 입력은 비워 두고 제니퍼 린덴바흐를 placeholder 예시로 표시합니다. 번역문은 사용자가 입력한 원본의 이름을 사용하며 서명 이미지는 추가하지 않습니다. 공개 발급본에서 확인한 `Certified extract from Registration of Birth issued at Regina, Saskatchewan, Canada.`를 화면 및 한글 PDF에 반영합니다.
 - PDF는 기존과 같은 Letter 한 페이지이며 SK 필드 배치를 별도로 적용합니다. GA 지역 허용 목록에 `sk`를 추가하되 로컬에서는 통계를 보내지 않습니다.
 - 사용자 요청에 따라 로컬 main에 커밋하되 배포 승인 전에는 push하지 않습니다. 공유 이미지 갱신은 공개 출시 전 별도 검토합니다.
 
 SK 가상 샘플은 `public/samples/sk-sample.pdf`입니다. 홍길동(남), 2026-03-27 출생, 새스커툰, 등록일 2026-03-30, 발급일 2026-04-02, 부모 춘섬·홍문(대한민국), 번역자 홍문을 사용합니다. 등록관 예시는 Jennifer Lindenbach(제니퍼 린덴바흐)입니다. 2026년 4월 SK 공식 관보와 주정부 명부에서 확인했으며, 실제 제출은 원본의 이름을 따릅니다. `node scripts/generate-samples.mjs sk-sample.pdf`로 SK 샘플만 재생성할 수 있습니다.
 
 SK PDF 본문 표는 전체 폭 519pt를 좌우 259.5pt씩 나눕니다. 두 열의 항목명 셀은 각각 81pt이며 값 셀 너비도 같습니다. 성명·번역자 표는 왼쪽 열, 증명서 번호는 오른쪽 열의 가운데에 맞춥니다. 이 배치는 샘플과 실제 PDF 생성에 공통으로 적용됩니다.
+
+
+### SK 공개 발급본 보완
+
+- 참고: https://www.reddit.com/r/Canadiancitizenship/comments/1ry8y4x/obtaining_saskatchewan_birth_certificate/ 의 가림 처리된 부모 정보 포함 증명서. 사진에는 사망자 표시가 있지만 아기 양식에는 적용하지 않습니다.
+- 오른쪽 원형 문양의 `VITAL EVENT RECORD` / `SASKATCHEWAN`과 리자이나 발급 문구를 반영했습니다. SVG는 원본 인장·문장을 복제하지 않은 자체 장식이며 생성 PDF에는 넣지 않습니다.
+- 서식 번호의 개정 날짜는 사진에서 확실히 판독·검증하지 못해 기존 공식 관보 값 유지 및 사용자 수정 안내를 유지합니다.
+- 인증 문구의 리자이나는 발급 도시입니다. 사용자가 입력하는 아기의 출생 도시(예: 새스커툰)와 별개입니다.

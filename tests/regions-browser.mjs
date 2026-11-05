@@ -84,8 +84,9 @@ await page.goto('http://127.0.0.1:5178/?region=sk');
 assert.equal(await page.locator('[data-region="sk"]').getAttribute('aria-pressed'),'true');
 assert.equal(await page.locator('#surname,#given').count(),0);
 assert.equal(await page.locator('#formCode').inputValue(),'V.S. 15 2008/09');
-assert.equal(await page.locator('.certified').count(),0);
-assert.match(await page.locator('.specimen-links a').getAttribute('href'),/#page=74$/);
+assert.equal(await page.locator('.certified').count(),1);
+assert.match(await page.locator('.certified').innerText(),/issued at Regina/);
+assert.match(await page.locator('.specimen-links a').first().getAttribute('href'),/#page=74$/);
 const skValues={...values,name:'홍길동',place:'새스커툰',registration:'2026-03-123456',birth:'2026-03-27',registered:'2026-03-30',issued:'2026-04-02',parent1:'춘섬',parent2:'홍문',parent2Place:'대한민국',registrarKo:'예시등록관',translator:'홍문',serial:'SK12345678'};
 for(const [key,value]of Object.entries(skValues)){if(key==='surname'||key==='given')continue;await page.locator('#'+key).fill(value);}
 await page.locator('#sex').selectOption('M');
