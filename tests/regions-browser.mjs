@@ -83,7 +83,7 @@ assert.equal(await page.locator('[data-region="ab"]').getAttribute('aria-pressed
 await page.goto('http://127.0.0.1:5178/?region=sk');
 assert.equal(await page.locator('[data-region="sk"]').getAttribute('aria-pressed'),'true');
 assert.equal(await page.locator('#surname,#given').count(),0);
-assert.equal(await page.locator('#formCode').inputValue(),'V.S. 15 2008/09');
+assert.equal(await page.locator('#formCode').inputValue(),'V.S. 15 2019/08');
 assert.equal(await page.locator('.certified').count(),1);
 assert.match(await page.locator('.certified').innerText(),/issued at Regina/);
 assert.match(await page.locator('.specimen-links a').first().getAttribute('href'),/#page=74$/);

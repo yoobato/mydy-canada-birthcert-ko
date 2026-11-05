@@ -9,7 +9,7 @@ export const fields = [
 export function fieldsFor(region='ab') {
  if (!['ab','bc','sk'].includes(region)) throw new Error('지원하는 발급지역을 선택해 주세요.');
  if(region==='sk')return [
-  ['name','성명','Name / Nom','text','예. 홍길동'],
+  ['name','성명','Name','text','예. 홍길동'],
   ['birth','생년월일','Date of Birth','date',''],['sex','성별','Sex','select',''],
   ['place','출생지','Place of Birth','text','예. 새스커툰, 리자이나'],
   ['registered','등록일','Registration Date','date',''],
