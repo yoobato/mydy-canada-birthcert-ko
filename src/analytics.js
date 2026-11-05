@@ -2,7 +2,15 @@ export const MEASUREMENT_ID = 'G-2TXN5Z7X2G';
 const EVENTS = new Set(['page_view', 'translation_preview', 'pdf_download', 'preview_pdf_download', 'support_click']);
 const PAGE = 'https://canada-birthcert-ko.mydy.kr/';
 
-// Only allowlisted event names, region codes and fixed page metadata enter Analytics.
+// Accept only this public promotion link; never forward arbitrary URL values.
+function campaignFor(href) {
+  const params = new URL(href || PAGE, PAGE).searchParams;
+  const expected = {utm_source:'threads', utm_medium:'social', utm_campaign:'birthcert_launch'};
+  if (!Object.entries(expected).every(([key,value]) => params.getAll(key).length === 1 && params.get(key) === value)) return {};
+  return {campaign_source:'threads', campaign_medium:'social', campaign_name:'birthcert_launch'};
+}
+
+// Only allowlisted events, regions, campaign constants and fixed page metadata enter Analytics.
 export function createAnalytics(win, doc, enabled) {
   if (!enabled) return { track() {} };
   win.dataLayer = win.dataLayer || [];
@@ -19,6 +27,7 @@ export function createAnalytics(win, doc, enabled) {
     page_location: PAGE,
     page_referrer: '',
     page_title: '캐나다 출생증명서 번역 | BC·알버타 한글 번역문 PDF',
+    ...campaignFor(win.location?.href),
   };
   gtag('config', MEASUREMENT_ID, {
     ...metadata,

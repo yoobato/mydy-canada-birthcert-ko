@@ -29,3 +29,28 @@ test('development does not load Google or queue telemetry',()=>{
   const win={};const analytics=createAnalytics(win,{createElement(){throw Error('must not load')}},false);
   analytics.track('page_view');assert.equal(win.dataLayer,undefined);
 });
+
+test('Threads attribution accepts only the fixed campaign and excludes arbitrary URL data',()=>{
+  function commands(query){
+    const win={location:{href:'https://canada-birthcert-ko.mydy.kr/?'+query+'#PRIVATE'}};
+    const doc={createElement:()=>({}),head:{appendChild(){}}};
+    const analytics=createAnalytics(win,doc,true);
+    analytics.track('page_view','bc');analytics.track('pdf_download','ab');
+    return win.dataLayer.map(a=>Array.from(a));
+  }
+  const approved='utm_source=threads&utm_medium=social&utm_campaign=birthcert_launch';
+  const accepted=commands(approved+'&name=PRIVATE&utm_content=PRIVATE');
+  for(const command of accepted.filter(a=>a[0]==='config'||a[0]==='event')){
+    const payload=command[2];
+    assert.equal(payload.campaign_source,'threads');
+    assert.equal(payload.campaign_medium,'social');
+    assert.equal(payload.campaign_name,'birthcert_launch');
+    assert.equal(payload.page_location,'https://canada-birthcert-ko.mydy.kr/');
+  }
+  assert.ok(!JSON.stringify(accepted).includes('PRIVATE'));
+  for(const query of ['utm_source=PRIVATE&utm_medium=social&utm_campaign=birthcert_launch','utm_source=threads',approved+'&utm_source=PRIVATE']){
+    const rejected=commands(query);
+    assert.ok(!JSON.stringify(rejected).includes('PRIVATE'));
+    assert.equal(rejected.find(a=>a[0]==='config')[2].campaign_source,undefined);
+  }
+});
