@@ -28,7 +28,7 @@ export function createAnalytics(win, doc, enabled) {
   const metadata = {
     page_location: PAGE,
     page_referrer: '',
-    page_title: '캐나다 출생증명서 번역 | BC·알버타·SK 한글 번역문 PDF',
+    page_title: '캐나다 출생증명서 번역 | BC·AB·SK 한글 번역문 PDF',
     ...campaignFor(win.location?.href),
   };
   gtag('config', MEASUREMENT_ID, {

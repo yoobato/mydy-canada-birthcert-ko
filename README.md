@@ -4,7 +4,7 @@
 
 **[서비스 이용하기](https://canada-birthcert-ko.mydy.kr/)** · [오류 제보](https://github.com/yoobato/mydy-canada-birthcert-ko/issues)
 
-![캐나다 BC·알버타·SK 출생증명서 한글 번역문 생성](public/og-image.png)
+![캐나다 BC·AB·SK 출생증명서 한글 번역문 생성](public/og-image.png)
 
 ## 지원 범위
 
