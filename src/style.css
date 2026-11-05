@@ -1261,3 +1261,6 @@ input[aria-invalid="true"],select[aria-invalid="true"] { border-bottom-color:#a1
 @media(max-width:760px) {
  .paper-bc .paper-heading,.paper-sk .paper-heading { padding-left:calc(24% + 11px); }
 }
+@media(max-width:760px) {
+ .paper-sk .paper-heading { padding-left:calc(24% + 13px); }
+}
