@@ -68,9 +68,11 @@ GA 페이지 제목은 `캐나다 출생증명서 번역 | BC·알버타 한글 
 
 ### Threads 홍보 유입
 
-공유 링크: https://canada-birthcert-ko.mydy.kr/?utm_source=threads&utm_medium=social&utm_campaign=birthcert_launch
+짧은 공유 링크: https://canada-birthcert-ko.mydy.kr/?from=threads
 
-세 매개변수가 위 값과 정확히 일치하고 중복되지 않을 때만 GA의 `campaign_source=threads`, `campaign_medium=social`, `campaign_name=birthcert_launch`를 설정합니다. 임의의 UTM 값, 추가 쿼리, 전체 URL은 전달하지 않습니다. 개발 환경에서는 이 기능도 비활성화됩니다.
+기존 링크도 지원합니다: https://canada-birthcert-ko.mydy.kr/?utm_source=threads&utm_medium=social&utm_campaign=birthcert_launch
+
+`from=threads`가 정확히 한 번 있거나 기존 UTM 세 매개변수가 위 값과 정확히 일치하고 중복되지 않을 때 GA의 `campaign_source=threads`, `campaign_medium=social`, `campaign_name=birthcert_launch`를 설정합니다. 두 링크는 리디렉션 없이 동일한 캠페인으로 처리합니다. 임의의 UTM 값, 추가 쿼리, 전체 URL은 전달하지 않습니다. 개발 환경에서는 이 기능도 비활성화됩니다.
 
 GA 트래픽 획득 보고서의 세션 소스/매체에서 `threads / social`, 세션 캠페인에서 `birthcert_launch`를 확인합니다. 탐색 분석에서 세션 소스/매체를 필터로 쓰면 해당 세션의 버튼 이벤트를 BC·AB별로 비교할 수 있습니다. 별도 맞춤 측정기준은 필요하지 않습니다. GA 보고서에서 실제 수집·귀속을 확인한 것과 코드/전송 설정 검증은 구분합니다. 새 세션이 시작되지 않은 기존 방문자는 세션 귀속이 다를 수 있습니다. 링크가 다른 곳으로 재공유돼도 동일 캠페인으로 표시되므로 사람의 실제 열람 출처를 증명하지는 않습니다. 이전 유입은 소급 분류할 수 없습니다.
 

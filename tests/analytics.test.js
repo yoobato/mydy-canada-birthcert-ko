@@ -39,16 +39,18 @@ test('Threads attribution accepts only the fixed campaign and excludes arbitrary
     return win.dataLayer.map(a=>Array.from(a));
   }
   const approved='utm_source=threads&utm_medium=social&utm_campaign=birthcert_launch';
-  const accepted=commands(approved+'&name=PRIVATE&utm_content=PRIVATE');
-  for(const command of accepted.filter(a=>a[0]==='config'||a[0]==='event')){
-    const payload=command[2];
-    assert.equal(payload.campaign_source,'threads');
-    assert.equal(payload.campaign_medium,'social');
-    assert.equal(payload.campaign_name,'birthcert_launch');
-    assert.equal(payload.page_location,'https://canada-birthcert-ko.mydy.kr/');
+  for(const query of [approved,'from=threads']){
+    const accepted=commands(query+'&name=PRIVATE&utm_content=PRIVATE');
+    for(const command of accepted.filter(a=>a[0]==='config'||a[0]==='event')){
+      const payload=command[2];
+      assert.equal(payload.campaign_source,'threads');
+      assert.equal(payload.campaign_medium,'social');
+      assert.equal(payload.campaign_name,'birthcert_launch');
+      assert.equal(payload.page_location,'https://canada-birthcert-ko.mydy.kr/');
+    }
+    assert.ok(!JSON.stringify(accepted).includes('PRIVATE'));
   }
-  assert.ok(!JSON.stringify(accepted).includes('PRIVATE'));
-  for(const query of ['utm_source=PRIVATE&utm_medium=social&utm_campaign=birthcert_launch','utm_source=threads',approved+'&utm_source=PRIVATE']){
+  for(const query of ['utm_source=PRIVATE&utm_medium=social&utm_campaign=birthcert_launch','utm_source=threads',approved+'&utm_source=PRIVATE','from=PRIVATE','from=threads&from=PRIVATE','from=Threads','from=threads-other']){
     const rejected=commands(query);
     assert.ok(!JSON.stringify(rejected).includes('PRIVATE'));
     assert.equal(rejected.find(a=>a[0]==='config')[2].campaign_source,undefined);

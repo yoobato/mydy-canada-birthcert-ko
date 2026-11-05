@@ -2,11 +2,13 @@ export const MEASUREMENT_ID = 'G-2TXN5Z7X2G';
 const EVENTS = new Set(['page_view', 'translation_preview', 'pdf_download', 'preview_pdf_download', 'support_click']);
 const PAGE = 'https://canada-birthcert-ko.mydy.kr/';
 
-// Accept only this public promotion link; never forward arbitrary URL values.
+// Accept only the fixed short link or its original UTM equivalent.
 function campaignFor(href) {
   const params = new URL(href || PAGE, PAGE).searchParams;
   const expected = {utm_source:'threads', utm_medium:'social', utm_campaign:'birthcert_launch'};
-  if (!Object.entries(expected).every(([key,value]) => params.getAll(key).length === 1 && params.get(key) === value)) return {};
+  const shortLink = params.getAll('from').length === 1 && params.get('from') === 'threads';
+  const originalLink = Object.entries(expected).every(([key,value]) => params.getAll(key).length === 1 && params.get(key) === value);
+  if (!shortLink && !originalLink) return {};
   return {campaign_source:'threads', campaign_medium:'social', campaign_name:'birthcert_launch'};
 }
 
