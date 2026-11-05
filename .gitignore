@@ -9,3 +9,4 @@ playwright-report/
 # Public fictional examples only; user-generated PDFs remain ignored.
 !public/samples/bc-sample.pdf
 !public/samples/alberta-sample.pdf
+!public/samples/sk-sample.pdf
