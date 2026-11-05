@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {koreanDate,validate,sexLabel} from '../src/data.js';
+import {koreanDate,validate,sexLabel,fieldsFor} from '../src/data.js';
 const sample={surname:'김',given:'하늘',birth:'2024-02-29',sex:'F',place:'에드먼턴',registration:'TEST-0000',registered:'2024-03-01',issued:'2024-03-05',parent1:'이예시',parent1Place:'대한민국',parent2:'김예시',parent2Place:'대한민국',registrarKo:'트레버 버겐',translator:'김번역'};
 test('dates remain local calendar dates, including leap day',()=>{assert.equal(koreanDate('2024-02-29'),'2024년 2월 29일');assert.throws(()=>koreanDate('2023-02-29'));assert.throws(()=>koreanDate('2024-13-01'));});
 test('reject incomplete, English, and reversed dates',()=>{assert.equal(validate(sample),sample);for(const override of [{registrarKo:''},{registrarKo:'Trevor Bergen'},{birth:'2024-03-03'},{issued:'2024-02-01'},{surname:'Kim'},{sex:'X'},{translator:''}])assert.throws(()=>validate({...sample,...override}));});
@@ -26,4 +26,15 @@ test('invalid fields have independent messages and date errors belong to their f
  try{validate({...sample,registrarKo:'Trevor',translator:'Kim',place:'Calgary'});assert.fail('Expected validation errors');}
  catch(error){assert.deepEqual(Object.keys(error.errors).sort(),['place','registrarKo','translator']);assert.match(error.errors.registrarKo,/등록관 이름/);assert.ok(!error.errors.registrarKo.includes('번역자'));assert.match(error.errors.translator,/번역자 이름/);}
  for(const [key,override]of [['registered',{registered:'2024-02-28'}],['issued',{issued:'2024-02-29'}],['birth',{birth:'2024-02-30'}]])assert.throws(()=>validate({...sample,...override}),error=>Boolean(error.errors[key]));
+});
+
+
+test('SK long form uses one full-name field and independent parent birthplaces',()=>{
+ const sk={...sample,region:'sk',name:'홍길동',surname:undefined,given:undefined,place:'새스커툰'};
+ assert.equal(validate(sk),sk);
+ const keys=fieldsFor('sk').map(f=>f[0]);
+ assert.ok(keys.includes('name'));assert.ok(!keys.includes('surname'));assert.ok(!keys.includes('given'));
+ for(const key of ['name','parent1','parent1Place','parent2','parent2Place','registrarKo'])assert.throws(()=>validate({...sk,[key]:''}),e=>Boolean(e.errors[key]));
+ assert.throws(()=>validate({...sk,name:'Hong'}),e=>Boolean(e.errors.name));
+ validate({...sk,sex:'OTHER',sexOther:'X'});
 });

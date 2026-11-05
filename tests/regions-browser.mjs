@@ -8,7 +8,7 @@ const errors=[],external=[];
 page.on('pageerror',e=>errors.push(e.message));
 page.on('request',r=>{if(!r.url().startsWith('http://127.0.0.1:5178/')&&!r.url().startsWith('blob:'))external.push(r.url());});
 await page.goto('http://127.0.0.1:5178/');
-assert.deepEqual(await page.locator('[data-region]').evaluateAll(buttons=>buttons.map(b=>b.dataset.region)),['bc','ab']);
+assert.deepEqual(await page.locator('[data-region]').evaluateAll(buttons=>buttons.map(b=>b.dataset.region)),['bc','ab','sk']);
 assert.equal(await page.locator('.paper .specimen-links a').count(),1);
 assert.match(await page.locator('.paper .specimen-links a').first().getAttribute('href'),/parental-birth-cert-sex-displayed\.jpg$/);
 assert.equal(await page.locator('[data-region="bc"]').getAttribute('aria-pressed'),'true');
@@ -80,4 +80,27 @@ assert.deepEqual(external,[]);assert.deepEqual(errors,[]);
 await page.reload();assert.equal(await page.locator('#surname').inputValue(),'');
 await page.goto('http://127.0.0.1:5178/?region=ab');
 assert.equal(await page.locator('[data-region="ab"]').getAttribute('aria-pressed'),'true');
-await browser.close();console.log('PASS: BC required sex, PDFs, draft switching, mobile, reset, local privacy');
+await page.goto('http://127.0.0.1:5178/?region=sk');
+assert.equal(await page.locator('[data-region="sk"]').getAttribute('aria-pressed'),'true');
+assert.equal(await page.locator('#surname,#given').count(),0);
+assert.equal(await page.locator('#formCode').inputValue(),'V.S. 15 2008/09');
+assert.equal(await page.locator('.certified').count(),0);
+assert.match(await page.locator('.specimen-links a').getAttribute('href'),/#page=74$/);
+const skValues={...values,name:'홍길동',place:'새스커툰',registration:'2026-03-123456',birth:'2026-03-27',registered:'2026-03-30',issued:'2026-04-02',parent1:'춘섬',parent2:'홍문',parent2Place:'대한민국',registrarKo:'예시등록관',translator:'홍문',serial:'SK12345678'};
+for(const [key,value]of Object.entries(skValues)){if(key==='surname'||key==='given')continue;await page.locator('#'+key).fill(value);}
+await page.locator('#sex').selectOption('M');
+assert.equal(await page.locator('#count').innerText(),'13 / 13');
+await page.locator('#preview').click();await page.waitForFunction(()=>document.querySelector('#dialog').open);await page.locator('#close').click();
+await download('tmp/pdfs/sk-long-form.pdf');
+await page.setViewportSize({width:1440,height:1100});
+await page.screenshot({path:'tmp/sk-desktop.png',fullPage:true});
+for(const width of [1101,1000,800,799,760,390,375,320]){
+ await page.setViewportSize({width,height:844});
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`SK overflow at ${width}`);
+}
+await page.setViewportSize({width:390,height:844});await page.screenshot({path:'tmp/sk-mobile.png',fullPage:true});
+await page.locator('[data-region="bc"]').click();assert.equal(await page.locator('#name').count(),0);
+await page.locator('[data-region="sk"]').click();assert.equal(await page.locator('#name').inputValue(),'홍길동');
+assert.equal(await page.locator('#registrarKo').inputValue(),'예시등록관');
+assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
+await browser.close();console.log('PASS: BC/AB/SK forms, PDF preview/download, draft isolation, responsive layout and local privacy');

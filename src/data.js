@@ -7,7 +7,19 @@ export const fields = [
  ['parent2','부 성명','Name of Parent','text','한글 성명'],['parent2Place','부 출생지','Place of Birth','text','예. 대한민국']
 ];
 export function fieldsFor(region='ab') {
- if (!['ab','bc'].includes(region)) throw new Error('지원하는 발급지역을 선택해 주세요.');
+ if (!['ab','bc','sk'].includes(region)) throw new Error('지원하는 발급지역을 선택해 주세요.');
+ if(region==='sk')return [
+  ['name','성명','Name / Nom','text','예. 홍길동'],
+  ['birth','생년월일','Date of Birth','date',''],['sex','성별','Sex','select',''],
+  ['place','출생지','Place of Birth','text','예. 새스커툰, 리자이나'],
+  ['registered','등록일','Registration Date','date',''],
+  ['parent1','부모 1 성명','Parent(s)','text','한글 성명'],
+  ['parent1Place','부모 1 출생지','Place of Birth','text','예. 대한민국'],
+  ['parent2','부모 2 성명','Parent(s)','text','한글 성명'],
+  ['parent2Place','부모 2 출생지','Place of Birth','text','예. 대한민국'],
+  ['registration','등록번호','Registration No.','text','등록번호'],
+  ['issued','발급일','Date Issued','date','']
+ ];
  return fields.map(field=>{
   const copy=[...field];
   if(region==='bc'){
@@ -23,6 +35,7 @@ export function fieldsFor(region='ab') {
  });
 }
 export function helpFor(region='ab') {
+ if(region==='sk')return {...help,name:'원본 Name에 적힌 아기의 성과 이름 전체를 한글로 적어 주세요.',place:'아기가 태어난 도시를 한글로 적어 주세요. 예: 새스커툰, 리자이나',parent1:'원본의 첫 번째 부모 성명을 한글로 적어 주세요.',parent2:'원본의 두 번째 부모 성명을 한글로 적어 주세요.',parent1Place:'첫 번째 부모의 출생지를 원본에 적힌 범위대로 한글로 적어 주세요.',parent2Place:'두 번째 부모의 출생지를 원본에 적힌 범위대로 한글로 적어 주세요.'};
  return region==='bc'?{...help,place:'아기가 태어난 도시를 한글로 적어 주세요. 예: 밴쿠버, 빅토리아',sex:'원본의 MALE(남), FEMALE(여)를 선택하거나, 다른 표기는 기타를 선택해 직접 입력해 주세요.',parent1:'원본의 첫 번째 부모 성명을 한글로 적어 주세요.',parent2:'원본의 두 번째 부모 성명을 한글로 적어 주세요.',parent1Place:'첫 번째 부모의 출생지를 원본에 적힌 범위대로 한글로 적어 주세요.',parent2Place:'두 번째 부모의 출생지를 원본에 적힌 범위대로 한글로 적어 주세요.'}:help;
 }
 export function koreanDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value))throw new Error('날짜를 선택해 주세요.');const [y,m,d]=value.split('-').map(Number);const date=new Date(0);date.setUTCFullYear(y,m-1,d);if(y<1000||date.getUTCFullYear()!==y||date.getUTCMonth()!==m-1||date.getUTCDate()!==d)throw new Error('유효한 날짜를 선택해 주세요.');return `${y}년 ${m}월 ${d}일`;}
@@ -32,7 +45,7 @@ export class ValidationError extends Error {
 export function validate(data){
  const region=data.region||'ab';
  const labels=Object.fromEntries(fieldsFor(region).map(([key,label])=>[key,label]));
- Object.assign(labels,{registrarKo:region==='bc'?'인구동태통계 총등록관 이름':'인구동태통계 등록관 이름',translator:'번역자 이름',formCode:'서식 번호',serial:'증명서 번호',sexOther:'성별 직접 입력'});
+ Object.assign(labels,{registrarKo:region==='sk'?'등록관 이름':region==='bc'?'인구동태통계 총등록관 이름':'인구동태통계 등록관 이름',translator:'번역자 이름',formCode:'서식 번호',serial:'증명서 번호',sexOther:'성별 직접 입력'});
  const errors={};
  const add=(key,message)=>{if(!errors[key])errors[key]=message;};
  const value=key=>typeof data[key]==='string'?data[key].trim():'';
